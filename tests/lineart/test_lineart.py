@@ -1,7 +1,9 @@
+''' tests for lineart.LineArt '''
 
 import unittest
 
 class LineArtTest(unittest.TestCase):
-  def setUp(self):
-    pass
+    ''' tests for lineart.LineArt '''
 
+    def setUp(self):
+        pass
