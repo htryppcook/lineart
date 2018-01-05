@@ -1,4 +1,7 @@
+.coverage
 coverage.xml
 log.txt
+.noseids
 *.egg-info
 __pycache__
+.vscode
