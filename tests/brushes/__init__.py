@@ -1,4 +1,3 @@
-''' tests for lineart.brushes.pixel_brush.PixelBrush '''
 
 from . import test_pixel_brush
 

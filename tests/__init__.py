@@ -1,4 +1,3 @@
-''' lineart tests '''
 
 from . import main
 from . import artists

@@ -1,4 +1,4 @@
-''' tests for lineart.artists.line_artist.LineArtist '''
+
 import unittest
 
 from lineart.artists.line_artist import LineArtist

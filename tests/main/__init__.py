@@ -1,4 +1,3 @@
-''' tests for lineart.main '''
 
 from . import test_main
 

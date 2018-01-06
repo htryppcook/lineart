@@ -1,4 +1,3 @@
-''' tests for lineart.LineArt '''
 
 from . import test_lineart
 

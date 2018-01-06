@@ -1,4 +1,3 @@
-''' Tests for lineart.main.Main() '''
 
 import unittest
 import shutil

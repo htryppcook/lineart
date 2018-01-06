@@ -1,4 +1,4 @@
-''' test for lineart.brushes.pixel_brush.PixelBrush '''
+
 import unittest
 
 from lineart.brushes.pixel_brush import PixelBrush
