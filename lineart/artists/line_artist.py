@@ -8,9 +8,16 @@ from .constants import COLORS
 from .constants import ADJACENCY
 from .constants import PERIMETER_ADJACENCY
 from .constants import REVERSE
+from .constants import random_rgb
+from .constants import out_of_bounds
+from .constants import rotato
 
 class LineArtist(Artist):
+
     ''' Draws maze-like doodles, with lines that never touch. '''
+
+    # pylint: disable=too-many-instance-attributes
+
     def __init__(self, line_color=COLORS['BLACK'],
                  background_color=COLORS['WHITE'],
                  line_start_color=COLORS['GOLD'], random_line_color=False):
@@ -74,7 +81,7 @@ class LineArtist(Artist):
                 continue
 
             if self.random_line_color:
-                selected.foreground = self.random_rgb()
+                selected.foreground = random_rgb()
             else:
                 selected.foreground = self.line_color
 
@@ -106,14 +113,10 @@ class LineArtist(Artist):
                                                          total_lines))
         return True
 
-    def random_rgb(self):
-        return tuple([random.randrange(0, 255) for _ in range(0, 3)])
-
     def select_brush(self, brush_names):
         if 'TimedPixelBrush' in brush_names:
             return 'TimedPixelBrush'
-        else:
-            return brush_names[0]
+        return brush_names[0]
 
     def select_offset(self, image, coords):
         ''' Choose the next direction we should start painting '''
@@ -122,7 +125,7 @@ class LineArtist(Artist):
         for offset in list(offsets):
             new_coords = (coords[0]+offset[0], coords[1]+offset[1])
 
-            if self.out_of_bounds(new_coords, image.width, image.height):
+            if out_of_bounds(new_coords, image.width, image.height):
                 del probabilities[offsets.index(offset)]
                 offsets.remove(offset)
                 continue
@@ -145,20 +148,9 @@ class LineArtist(Artist):
             # Rotate the probabilities list a number of spaces equal to the
             #   distance between the previous choice and the current choice.
             # This increases the probability that we paint straighter lines.
-            self.rotato(probabilities, distance)
+            rotato(probabilities, distance)
             self.prev = REVERSE[choice]
             return choice
-
-    def out_of_bounds(self, coords, width, height):
-        '''
-            Returns True if coords is out of the image's bounds,
-            False otherwise
-        '''
-        if coords[0] < 1 or coords[0] >= width-1 \
-          or coords[1] < 1 or coords[1] >= height-1:
-            return True
-        else:
-            return False
 
     def remove_adjacencies(self, image, coords):
         '''
@@ -190,25 +182,10 @@ class LineArtist(Artist):
             for adjacent in adjacencies:
                 to_check = (coords[0]+adjacent[0], coords[1]+adjacent[1])
                 if offset in offsets \
-                  and not self.out_of_bounds(to_check, image.width, image.height) \
+                  and not out_of_bounds(to_check, image.width, image.height) \
                   and image.getpixel(to_check) != self.background_color:
                     del probabilities[offsets.index(offset)]
                     offsets.remove(offset)
                     break
 
         return offsets, probabilities
-
-    def rotato(self, probabilities, distance):
-        '''
-            Rotates the probabilities array the specified number of places.
-            examples:
-            >>> rotato([1,2,3], 0)
-            [1, 2, 3]
-            >>> rotato([1,2,3], 1)
-            [2, 3, 1]
-            >>> rotato([1,2,3], 2)
-            [3, 1, 2]
-            >>> rotato([1,2,3], 3)
-            [1, 2, 3]
-        '''
-        return probabilities[distance:] + probabilities[:distance]
