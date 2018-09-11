@@ -4,8 +4,7 @@ from . import brush
 from . import lineart
 
 __all__ = [
-  'artist',
-  'brush',
-  'lineart'
+    'artist',
+    'brush',
+    'lineart'
 ]
-
